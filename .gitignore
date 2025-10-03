@@ -1,0 +1,78 @@
+# .gitignore for Music_Service
+# Exclude virtual environments, build artefacts, local databases, secrets and editor files
+
+# Byte-compiled / caching
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+# The project contains a folder named `Music_Service/` for a virtualenv — ignore it
+Music_Service/
+venv/
+env/
+.venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+.pytest_cache/
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Logs and runtime files
+*.log
+*.pid
+*.sock
+
+# Database files (local development)
+*.sqlite3
+*.db
+src/app/database/*.db
+
+# Environment and secrets
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+.python-version
+envrc
+secrets.json
+credentials
+config.py
+
+# Editor and OS files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+*.swp
+
+# Byte-compiled C extensions
+*.so
+*.pyd
+
+# Misc
+Pipfile.lock
+*.manifest
+*.spec
+.mypy_cache/
+
+# If you need to keep a sample of config, create and track a template file like:
+#   config.example.py
+# or
+#   .env.example

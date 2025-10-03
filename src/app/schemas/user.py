@@ -22,7 +22,7 @@ class UserResponse(BaseModel):
     type: str
 
     class Config:
-        orm_mode = True 
+        from_attributes = True
 
 class ListenerResponse(UserResponse):
     favorite_genre: Optional[str] = None
