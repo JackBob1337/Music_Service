@@ -12,6 +12,12 @@ Music_Service/
 venv/
 env/
 .venv/
+venv.bak/
+ENV/
+env.bak/
+# pipx and local python installs
+/.local/
+/.venv/
 
 # Distribution / packaging
 build/
@@ -71,6 +77,9 @@ Pipfile.lock
 *.manifest
 *.spec
 .mypy_cache/
+
+# JetBrains
+.idea/
 
 # If you need to keep a sample of config, create and track a template file like:
 #   config.example.py
