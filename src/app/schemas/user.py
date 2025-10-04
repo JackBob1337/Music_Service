@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from uuid import UUID
 
 class UserCreate(BaseModel):
     user_name: str
@@ -16,7 +17,7 @@ class PerformerCreate(UserCreate):
     album_count: Optional[int] = 0
 
 class UserResponse(BaseModel):
-    id: int
+    id: UUID
     user_name: str
     email: EmailStr
     type: str

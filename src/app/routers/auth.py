@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Form
 from sqlalchemy.orm import Session
+from src.app.core.security import create_access_token, create_refresh_token
 from src.app.database.session import get_db
 from src.app.models.user import Listener, Perfomer
 from src.app.schemas.user import ListenerCreate, PerformerCreate, UserResponse, ListenerResponse, PerformerResponse
@@ -10,7 +11,7 @@ from src.app.services.performer_service import PerformerService
 
 router = APIRouter()
 
-@router.post("/register/listener", response_model=ListenerResponse)
+@router.post("/register/listener", summary="Create a listener", response_model=ListenerResponse)
 def register_listener(user: ListenerCreate, db: Session = Depends(get_db)):
     service = ListenerService(db)
     listener = service.create_listener(user)
@@ -23,17 +24,15 @@ def register_performer(user: PerformerCreate, db: Session = Depends(get_db)):
     return PerformerResponse.from_orm(performer)
 
 @router.post("/login")
-def login(request: LoginRequest, db: Session = Depends(get_db)):
+def login(email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     service = UserService(db)
-    user = service.login_user(request.email, request.password)
+    user = service.login_user(email, password)
+    
     return {
-        "message": "Login successful",
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "username": user.user_name
-        }
+        "access_token": create_access_token(user.id),
+        "refresh_token": create_refresh_token(user.id)
     }
+
         
 @router.get("/listeners")
 def get_listeners(db: Session = Depends(get_db)):
