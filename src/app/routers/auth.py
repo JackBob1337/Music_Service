@@ -8,6 +8,7 @@ from src.app.schemas.auth import LoginRequest
 from src.app.services.user_service import UserService
 from src.app.services.listener_service import ListenerService
 from src.app.services.performer_service import PerformerService
+from src.app.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -24,15 +25,18 @@ def register_performer(user: PerformerCreate, db: Session = Depends(get_db)):
     return PerformerResponse.from_orm(performer)
 
 @router.post("/login")
-def login(email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+def login(data: LoginRequest, db: Session = Depends(get_db)):
     service = UserService(db)
-    user = service.login_user(email, password)
+    user = service.login_user(data.email, data.password)
     
     return {
         "access_token": create_access_token(user.id),
         "refresh_token": create_refresh_token(user.id)
     }
 
+@router.get("/me", summary="Get details of currently logged in user", response_model=UserResponse)
+async def get_me(user: UserResponse = Depends(get_current_user)):
+    return user
         
 @router.get("/listeners")
 def get_listeners(db: Session = Depends(get_db)):
