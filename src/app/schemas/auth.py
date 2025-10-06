@@ -7,3 +7,9 @@ class LoginRequest(BaseModel):
 class TokenPayload(BaseModel):
     sub: str
     exp: int
+
+class TrackCreate(BaseModel):
+    title: str
+    file_path: str
+
+

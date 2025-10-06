@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from src.app.models.user import Listener
 from src.app.services.user_service import UserService
-
+   
 class ListenerService(UserService):
     def __init__ (self, db: Session):
         super().__init__(db)

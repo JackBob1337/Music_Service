@@ -81,6 +81,39 @@ Pipfile.lock
 # JetBrains
 .idea/
 
+# SQLite temporary and journaling files
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite-journal
+
+# Common local DB files
+users.db
+user.db
+
+# pip wheel/cache artifacts
+pip-wheel-metadata/
+*.egg
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor swap/backup files
+*~
+
+# Temporary and logs
+logs/
+tmp/
+localtmp/
+
+# OS generated files
+ehthumbs.db
+Icon?
+
+# Note: keep your migration scripts (alembic/migration) under source control.
+# DO NOT add `migration/` or `alembic/versions/` to .gitignore — commit migrations.
+
 # If you need to keep a sample of config, create and track a template file like:
 #   config.example.py
 # or

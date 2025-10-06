@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, Form
 from sqlalchemy.orm import Session
 from src.app.core.security import create_access_token, create_refresh_token
 from src.app.database.session import get_db
-from src.app.models.user import Listener, Perfomer
+from src.app.models.user import Listener, Performer
 from src.app.schemas.user import ListenerCreate, PerformerCreate, UserResponse, ListenerResponse, PerformerResponse
-from src.app.schemas.auth import LoginRequest
+from src.app.schemas.auth import LoginRequest, TrackCreate
 from src.app.services.user_service import UserService
 from src.app.services.listener_service import ListenerService
 from src.app.services.performer_service import PerformerService
@@ -44,4 +44,9 @@ def get_listeners(db: Session = Depends(get_db)):
 
 @router.get("/performers")
 def get_performers(db: Session = Depends(get_db)):
-    return db.query(Perfomer).all()
+    return db.query(Performer).all()
+
+@router.post("performer/{performer_id}/tracks")
+def upload_track(performer_id: str, track: TrackCreate, db: Session = Depends(get_db)):
+    service = PerformerService(db)
+    return service.upload_track(performer_id, track)
