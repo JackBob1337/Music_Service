@@ -84,5 +84,3 @@ git commit -m "Apply .gitignore and remove local artifacts from index"
 
 
 ---
-_Generated from the current repository layout on 2025-10-06._
-# Music_Service
