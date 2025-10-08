@@ -11,6 +11,7 @@ class UserService():
         existing_user = self.db.query(User).filter(
             (User.email == user_create.email) | (User.user_name == user_create.user_name)
         ).first()
+        
         if existing_user:
             if existing_user.email == user_create.email:
                 raise HTTPException(status_code=400, detail="Email already registered")

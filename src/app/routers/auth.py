@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Form
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.app.core.security import create_access_token, create_refresh_token
 from src.app.database.session import get_db
@@ -16,13 +16,13 @@ router = APIRouter()
 def register_listener(user: ListenerCreate, db: Session = Depends(get_db)):
     service = ListenerService(db)
     listener = service.create_listener(user)
-    return ListenerResponse.from_orm(listener)
+    return ListenerResponse.model_validate(listener)
 
 @router.post("/register/performer", response_model=PerformerResponse)
 def register_performer(user: PerformerCreate, db: Session = Depends(get_db)):
     service = PerformerService(db)
     performer = service.create_performer(user)
-    return PerformerResponse.from_orm(performer)
+    return PerformerResponse.model_validate(performer)
 
 @router.post("/login")
 def login(data: LoginRequest, db: Session = Depends(get_db)):

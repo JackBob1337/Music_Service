@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from pydantic import ConfigDict
 from typing import Optional
 from uuid import UUID
 
@@ -22,8 +23,7 @@ class UserResponse(BaseModel):
     email: EmailStr
     type: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # вместо устаревшего Config
 
 class ListenerResponse(UserResponse):
     favorite_genre: Optional[str] = None
