@@ -57,7 +57,7 @@ class TestUserRegistration:
         assert response.status_code == 400
         assert response.json()["detail"] == "Username already registered"
 
-    def test_login_listener(self, client):
+    def test_login_user(self, client):
         response = client.post(
             "/login",
             json = {
@@ -71,7 +71,6 @@ class TestUserRegistration:
         assert response.status_code == 200
         assert "access_token" in data
         assert "refresh_token" in data
-
         assert isinstance(data["access_token"], str) and len(data["access_token"]) > 0
         assert isinstance(data["refresh_token"], str) and len(data["refresh_token"]) > 0
 

@@ -1,4 +1,5 @@
 import os
+import string
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from typing import Union, Any
@@ -6,6 +7,9 @@ from jose import jwt
 from passlib.context import CryptContext
 
 load_dotenv()
+
+MIN_PASSWORD_LEN = 8
+SPECIAL_CHARACTERS = string.punctuation
 
 ACCESS_TOKEN_EXPIRE_MINUTE = 30
 REFRESH_TOKEN_EXPIRE_MINUTE = 60 * 24 * 7
@@ -20,6 +24,35 @@ def hash_password(password: str):
 
 def verify_password(password: str, hashed_pass: str):
     return pwd_context.verify(password, hashed_pass)
+
+def password_validation(password: str):
+    errors = []
+
+    if not password or password.strip() == "":
+        errors.append("Password cannot be empty.")
+        
+    else:
+        if len(password) < MIN_PASSWORD_LEN:
+            errors.append(f"Password must be at least {MIN_PASSWORD_LEN} characters long.")
+
+        if not any(char.isdigit() for char in password):
+            errors.append("Password must contain at least one digit.")
+
+        if not any(char.isupper() for char in password):
+            errors.append("Password must contain at least one uppercase letter.")
+
+        if not any(char in SPECIAL_CHARACTERS for char in password):
+            errors.append("Password must contain at least one special character.")
+
+    if errors:
+        raise ValueError("\n".join(errors))
+
+    return True
+    
+    
+
+
+
 
 def create_access_token(subject: Union[str, Any], expires_delta: int = None):
     if expires_delta is not None:
