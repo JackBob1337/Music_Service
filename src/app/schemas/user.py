@@ -1,9 +1,9 @@
-from pydantic import BaseModel, EmailStr, field_validator, ValidationError
+from pydantic import BaseModel, EmailStr, field_validator
 from pydantic import ConfigDict
 from typing import Optional
 from uuid import UUID
 
-from src.app.core.security import password_validation
+from src.app.core.security import password_validation, user_name_validator
 
 class UserCreate(BaseModel):
     user_name: str
@@ -14,11 +14,13 @@ class UserCreate(BaseModel):
 
     @field_validator('password')
     def validate_password(cls, pwd):
-        try:
-            password_validation(pwd)
-        except ValueError as e:
-            raise ValidationError(str(e))
+        password_validation(pwd)
         return pwd
+    
+    @field_validator('user_name')
+    def validate_user_name(cls, v: str):
+        user_name_validator(v)
+        return v.strip()
 
 class ListenerCreate(UserCreate):
     favorite_genre: Optional[str] = None

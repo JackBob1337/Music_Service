@@ -1,4 +1,5 @@
 import os
+import re
 import string
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
@@ -10,6 +11,9 @@ load_dotenv()
 
 MIN_PASSWORD_LEN = 8
 SPECIAL_CHARACTERS = string.punctuation
+
+MIN_USERNAME_LEN = 3
+MAX_USERNAME_LEN = 15
 
 ACCESS_TOKEN_EXPIRE_MINUTE = 30
 REFRESH_TOKEN_EXPIRE_MINUTE = 60 * 24 * 7
@@ -48,12 +52,28 @@ def password_validation(password: str):
         raise ValueError("\n".join(errors))
 
     return True
+
+def user_name_validator(user_name: str):
+    errors =[]
+
+    if not isinstance(user_name, str):
+        errors.append("Username must be a string.")
     
+    v = user_name.strip()
+
+    if not v or v.strip() == "":
+        errors.append("Username cannot be empty.")
+        
+    if len(v) < MIN_USERNAME_LEN or len(v) > MAX_USERNAME_LEN:
+        errors.append(f"Username must be between {MIN_USERNAME_LEN} and {MAX_USERNAME_LEN} characters long.")
     
+    if  not re.match("^[A-Za-z0-9_]+$", v):
+        errors.append("Username can only contain letters, digits, and underscores.")
 
-
-
-
+    if errors:
+        raise ValueError("\n".join(errors))
+    return True 
+    
 def create_access_token(subject: Union[str, Any], expires_delta: int = None):
     if expires_delta is not None:
         expires_delta = datetime.utcnow() + expires_delta

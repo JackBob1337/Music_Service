@@ -7,7 +7,7 @@ class TestUserRegistration:
             json = {
                 "user_name": "test_user",
                 "email": "test@example.com",
-                "password": "qwerty123",
+                "password": "abcD1234!",
                 "date_of_birthday": "2000-10-10",
                 "gender": "test_gender",
                 "favorite_genre": " "
@@ -18,6 +18,29 @@ class TestUserRegistration:
         print("*" * 20)
         assert response.status_code == 200
         assert response.json()["email"] == "test@example.com"
+    
+    def test_password_validation_fall(self, client):
+        response = client.post(
+            "/register/listener",
+            json = {
+                "user_name": "test_user",
+                "email": "test@example.com",
+                "password": "asdfasdfasdf",
+                "date_of_birthday": "2000-10-10",
+                "gender": "test_gender",
+                "favorite_genre": " "
+            }
+        )
+
+        assert response.status_code == 422
+        data = response.json()
+        password_errors = [
+            err for err in data["detail"]
+            if err.get("loc") and "password" in err["loc"]
+        ]
+        assert password_errors, "expected password validation errors"
+        msg = " ".join(err["msg"].lower() for err in password_errors)
+        assert ("digit" in msg) or ("uppercase" in msg) or ("special" in msg)
 
     def test_register_duplicate_email_listener(self, client):
         response = client.post(
@@ -25,7 +48,7 @@ class TestUserRegistration:
             json = {
                 "user_name": "test_user",
                 "email": "test@example.com",
-                "password": "qwerty123",
+                "password": "abcD1234!",
                 "date_of_birthday": "2000-10-10",
                 "gender": "test_gender",
                 "favorite_genre": "test_genre"
@@ -44,7 +67,7 @@ class TestUserRegistration:
             json = {
                 "user_name": "test_user",
                 "email": "test_2@example.com",
-                "password": "qwerty123",
+                "password": "abcD1234!",
                 "date_of_birthday": "2000-10-10",
                 "gender": "test_gender",
                 "favorite_genre": "test_genre"
@@ -62,7 +85,7 @@ class TestUserRegistration:
             "/login",
             json = {
                 "email": "test@example.com",
-                "password": "qwerty123"
+                "password": "abcD1234!"
             }
         )
 
